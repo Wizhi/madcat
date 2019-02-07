@@ -1,18 +1,19 @@
 import puppeteer from 'puppeteer';
 import signIn from './signIn';
-import getReleaseLinks from './getReleaseLinks';
 import downloadRelease from './downloadRelease';
+import ReleaseLinkScraper from './ReleaseLinkScraper';
 
 (async () => {
     const browser = await puppeteer.launch({
         // https://github.com/Googlechrome/puppeteer/issues/290
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        headless: true,
+        headless: false,
     });
 
     await signIn(browser);
 
-    const releaseLinks = await getReleaseLinks(browser);
+    const scraper = await ReleaseLinkScraper.create(browser);
+    const releaseLinks = await scraper._scrape();
 
     await downloadRelease(browser, releaseLinks[0]);
 
