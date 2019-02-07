@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import axios from "axios";
 import { URL } from "url";
 import qs from "qs";
 import fs from "fs";
