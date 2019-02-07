@@ -4,7 +4,8 @@ import qs from "qs";
 import waitForDownloadToComplete from "./waitForDownloadToComplete";
 
 // Currently hardcoded
-const downloadsDirPath = "/tmp/puppeteer/downloads";
+const downloadPath = "/tmp/puppeteer/downloads";
+const awsUrlExpression = /https:\/\/s3\.amazonaws\.com\/data\.monstercat\.com\/blobs/;
 
 /**
  * Signs into the site
@@ -13,6 +14,8 @@ const downloadsDirPath = "/tmp/puppeteer/downloads";
  */
 export default function downloadRelease(browser, link) {
     return new Promise(async (resolve, reject) => {
+        console.log("Downloading release");
+
         const page = await browser.newPage();
 
         await Promise.all([
@@ -27,10 +30,8 @@ export default function downloadRelease(browser, link) {
     
         await page._client.send("Page.setDownloadBehavior", {
             behavior: "allow",
-            downloadPath: "/tmp/puppeteer/downloads/"
+            downloadPath
         });
-    
-        const awsUrlExpression = /https:\/\/s3\.amazonaws\.com\/data\.monstercat\.com\/blobs/;
     
         page.on("response", async response => {
             const url = response.url();
@@ -47,7 +48,7 @@ export default function downloadRelease(browser, link) {
     
             console.log(`Filename: ${fileName}`);
     
-            await waitForDownloadToComplete(`${downloadsDirPath}/${fileName}`);
+            await waitForDownloadToComplete(`${downloadPath}/${fileName}`);
 
             resolve();
         });

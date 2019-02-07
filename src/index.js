@@ -16,7 +16,5 @@ import downloadRelease from "./downloadRelease";
 
     await downloadRelease(browser, releaseLinks[0]);
 
-    console.log('done');
-
     // await browser.close();
 })();
