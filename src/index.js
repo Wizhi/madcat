@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer";
 import signIn from "./signIn";
-import downloadReleases from "./downloadReleases";
+import getReleaseLinks from "./getReleaseLinks";
+import downloadRelease from "./downloadRelease";
 
 (async () => {
     const browser = await puppeteer.launch({
@@ -10,6 +11,10 @@ import downloadReleases from "./downloadReleases";
     });
 
     await signIn(browser);
-    await downloadReleases(browser);
+
+    const releaseLinks = await getReleaseLinks(browser);
+
+    downloadRelease(browser, releaseLinks[0]);
+
     // await browser.close();
 })();

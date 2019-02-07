@@ -11,27 +11,11 @@ const downloadsDirPath = "/tmp/puppeteer/downloads";
  *
  * @param {puppeteer.Browser} browser
  */
-export default async function downloadReleases(browser) {
-    console.log("Beginning download process");
-
+export default async function downloadRelease(browser, link) {
     const page = await browser.newPage();
 
     await Promise.all([
-        page.goto("https://www.monstercat.com/music"),
-        page.waitForNavigation({ waitUntil: "networkidle0" }),
-        page.waitForSelector('section[role="content"] ul.art-list')
-    ]);
-
-    const links = await page.evaluate(() =>
-        [
-            ...document.querySelectorAll(
-                'section[role="content"] ul.art-list li:not(.in-early-access) a'
-            )
-        ].map(element => element.href)
-    );
-
-    await Promise.all([
-        page.goto(links[0]),
+        page.goto(link),
         page.waitForSelector("a.button.button--mcatgold")
     ]);
 
@@ -40,9 +24,9 @@ export default async function downloadReleases(browser) {
         await page.$("a.button.button--mcatgold")
     );
 
-    await page._client.send('Page.setDownloadBehavior', {
-        behavior: 'allow',
-        downloadPath: '/tmp/puppeteer/downloads/'
+    await page._client.send("Page.setDownloadBehavior", {
+        behavior: "allow",
+        downloadPath: "/tmp/puppeteer/downloads/"
     });
 
     const awsUrlExpression = /https:\/\/s3\.amazonaws\.com\/data\.monstercat\.com\/blobs/;
@@ -55,10 +39,10 @@ export default async function downloadReleases(browser) {
         }
 
         console.log("Found AWS response");
-        
+
         const fileName = qs
-            .parse(new URL(url).search)["response-content-disposition"]
-            .match(/filename="(.+)"/)[1];
+            .parse(new URL(url).search)
+            ["response-content-disposition"].match(/filename="(.+)"/)[1];
 
         console.log(`Filename: ${fileName}`);
 
@@ -68,6 +52,8 @@ export default async function downloadReleases(browser) {
     try {
         await page.goto(downloadUrl);
     } catch (e) {
-        console.log("Puppeteer always throws this error ¯\\_(ツ)_/¯ - see https://github.com/GoogleChrome/puppeteer/issues/2794");
+        console.log(
+            "Puppeteer always throws this error ¯\\_(ツ)_/¯ - see https://github.com/GoogleChrome/puppeteer/issues/2794"
+        );
     }
 }
