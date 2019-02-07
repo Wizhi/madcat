@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Check if file exists, watching containing directory meanwhile.
@@ -24,12 +24,12 @@ export default function waitForDownloadToComplete(fileName, timeout = 15000) {
         //     }
         // });
 
-        console.log("Waiting for download completion");
+        console.log('Waiting for download completion');
 
         const dir = path.dirname(fileName);
         const basename = path.basename(fileName);
         const watcher = fs.watch(dir, function(eventType, filename) {
-            if (eventType === "rename" && filename === basename) {
+            if (eventType === 'rename' && filename === basename) {
                 // clearTimeout(timer);
                 watcher.close();
                 resolve();
