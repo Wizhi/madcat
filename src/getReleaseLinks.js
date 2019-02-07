@@ -16,7 +16,7 @@ export default async function getReleaseLinks(browser) {
         page.waitForSelector('section[role="content"] ul.art-list')
     ]);
 
-    return await page.evaluate(() =>
+    return page.evaluate(() =>
         [
             ...document.querySelectorAll(
                 'section[role="content"] ul.art-list li:not(.in-early-access) a'
