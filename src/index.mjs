@@ -1,7 +1,9 @@
 import puppeteer from 'puppeteer';
 import signIn from './signIn.mjs';
 import downloadRelease from './downloadRelease.mjs';
-import ReleaseLinkScraper from './ReleaseLinkScraper.mjs';
+import ReleaseLinkScraper, {
+    getReleasePageLinks,
+} from './ReleaseLinkScraper.mjs';
 
 (async () => {
     const browser = await puppeteer.launch({
@@ -13,9 +15,10 @@ import ReleaseLinkScraper from './ReleaseLinkScraper.mjs';
     await signIn(browser);
 
     const scraper = await ReleaseLinkScraper.create(browser);
-    const releaseLinks = await scraper.scrape(1);
 
-    console.log(releaseLinks);
+    for await (const link of getReleasePageLinks(scraper)) {
+        console.log(link);
+    }
 
     // await downloadRelease(browser, releaseLinks[0]);
 
