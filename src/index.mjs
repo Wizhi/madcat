@@ -13,9 +13,11 @@ import ReleaseLinkScraper from './ReleaseLinkScraper.mjs';
     await signIn(browser);
 
     const scraper = await ReleaseLinkScraper.create(browser);
-    const releaseLinks = await scraper._scrape();
+    const releaseLinks = await scraper.scrape(1);
 
-    await downloadRelease(browser, releaseLinks[0]);
+    console.log(releaseLinks);
+
+    // await downloadRelease(browser, releaseLinks[0]);
 
     // await browser.close();
 })();
