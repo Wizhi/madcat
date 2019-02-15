@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
-import signIn from './signIn';
-import downloadRelease from './downloadRelease';
-import ReleaseLinkScraper from './ReleaseLinkScraper';
+import signIn from './signIn.mjs';
+import downloadRelease from './downloadRelease.mjs';
+import ReleaseLinkScraper from './ReleaseLinkScraper.mjs';
 
 (async () => {
     const browser = await puppeteer.launch({

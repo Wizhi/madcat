@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { URL } from 'url';
 import qs from 'qs';
-import waitForDownloadToComplete from './waitForDownloadToComplete';
+import waitForDownloadToComplete from './waitForDownloadToComplete.mjs';
 
 // Currently hardcoded
 const downloadPath = '/tmp/puppeteer/downloads';

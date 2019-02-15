@@ -5,11 +5,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/src/index.js",
-            "runtimeArgs": [
-                "-r",
-                "esm"
-            ]
+            "program": "${workspaceFolder}/src/index.mjs",
+            "runtimeArgs": ["--experimental-modules"]
         }
     ]
 }
